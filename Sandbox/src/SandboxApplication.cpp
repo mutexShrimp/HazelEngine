@@ -6,6 +6,7 @@ public:
 	ExampleLayer()
 		: Layer("ExampleLayer")
 	{
+		
 	}
 
 	void OnUpdate() override
