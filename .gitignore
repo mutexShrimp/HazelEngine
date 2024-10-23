@@ -17,8 +17,8 @@ bin-release/
 # should NOT be excluded as they contain compiler settings and other important
 # information for Eclipse / Flash Builder.
 *.opendb
-bin/
-bin-int/
+./bin/
+./bin-int/
 .vs/
 .idea/
 Hazel.sln
