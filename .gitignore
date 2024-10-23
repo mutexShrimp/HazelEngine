@@ -3,6 +3,8 @@ bin-debug/
 bin-release/
 [Oo]bj/
 /[Bb]in/
+Hazel/*/*/[Bb]in/
+Hazel/*/*/[Bb]in-int/
 
 # Other files and folders
 .settings/
