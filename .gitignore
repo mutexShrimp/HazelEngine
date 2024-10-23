@@ -2,7 +2,7 @@
 bin-debug/
 bin-release/
 [Oo]bj/
-[Bb]in/
+/[Bb]in/
 
 # Other files and folders
 .settings/
@@ -17,7 +17,7 @@ bin-release/
 # should NOT be excluded as they contain compiler settings and other important
 # information for Eclipse / Flash Builder.
 *.opendb
-
+/bin/
 /bin-int/
 .vs/
 .idea/
