@@ -1,5 +1,7 @@
 #include <Hazel.h>
 
+#include "imgui/imgui.h"
+
 class ExampleLayer : public Hazel::Layer
 {
 public:
@@ -12,6 +14,15 @@ public:
 	void OnUpdate() override
 	{
 		
+	}
+
+	void OnImGuiRender() override
+	{
+		ImGui::Begin("Test");
+		ImGui::Text("Hello World");
+		ImGui::ColorEdit4("", new float[4]);
+		ImGui::End();
+
 	}
 
 	void OnEvent(Hazel::Event& event) override
