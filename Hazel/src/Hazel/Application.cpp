@@ -5,6 +5,7 @@
 #include <glad/glad.h>
 
 #include "Renderer/Buffer.h"
+#include "Renderer/Renderer.h"
 
 namespace Hazel {
 
@@ -174,6 +175,19 @@ namespace Hazel {
 			glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
 
+			RenderCommand::SetClearColor();
+			RenderCommand::Clear();
+			
+			Renderer::BeginScene();
+
+			m_Shader2->Bind();
+			Renderer::Submit(m_SquareVA);
+
+			m_Shader->Bind();
+			Renderer::Submit(m_VertexArray);
+			
+			Renderer::EndScene();
+			
 			m_Shader2->Bind();
 			m_SquareVA->Bind();
 			glDrawElements(GL_TRIANGLES, m_SquareVA->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
