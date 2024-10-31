@@ -62,6 +62,7 @@ namespace Hazel {
 		{
 		}
 
+		// Block if true
 		template<typename T>
 		bool Dispatch(EventFn<T> func)
 		{
