@@ -2,11 +2,14 @@
 
 // For use by Hazel applications
 
+// Utility
 #include "Hazel/Application.h"
 #include "Hazel/Layer.h"
 #include "Hazel/Log.h"
 #include "Hazel/ImGui/ImGuiLayer.h"
+#include "Hazel/Core/Timestep.h"
 
+// Input
 #include "Hazel/Input.h"
 #include "Hazel/KeyCodes.h"
 #include "Hazel/MouseButtonCodes.h"
