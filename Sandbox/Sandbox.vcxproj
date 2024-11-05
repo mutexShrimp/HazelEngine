@@ -139,6 +139,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\shaders\Texture.glsl" />
     <Content Include="assets\textures\Checkerboard.png" />
     <Content Include="assets\textures\ChernoLogo.png" />
   </ItemGroup>
