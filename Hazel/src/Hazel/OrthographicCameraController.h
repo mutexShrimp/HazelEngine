@@ -15,6 +15,9 @@ namespace Hazel
         void OnUpdate(Timestep ts);
         void OnEvent(Event& e);
 
+        OrthographicCamera& GetCamera() { return m_Camera; }
+        const OrthographicCamera& GetCamera() const { return m_Camera; }
+        
     private:
         bool OnMouseScrolled(MouseScrolledEvent& e);
         bool OnWindowResized(WindowResizeEvent& e);
