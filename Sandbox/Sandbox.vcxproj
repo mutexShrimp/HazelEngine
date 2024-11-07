@@ -131,6 +131,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\SandboxApplication2D.h" />
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="src\SandboxApplication.cpp" />
     <ClCompile Include="src\SandboxApplication2D.cpp" />
   </ItemGroup>
@@ -138,15 +141,6 @@
     <ProjectReference Include="..\Hazel\Hazel.vcxproj">
       <Project>{99294D0D-053E-75BE-CEBF-181E3A9371EF}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\SandboxApplication2D.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="assets\shaders\FlatColor.glsl" />
-    <Content Include="assets\shaders\Texture.glsl" />
-    <Content Include="assets\textures\Checkerboard.png" />
-    <Content Include="assets\textures\ChernoLogo.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
