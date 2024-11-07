@@ -58,6 +58,7 @@ void SandboxApplication2D::OnUpdate(Hazel::Timestep ts)
 			
 	Hazel::Renderer::BeginScene(m_CameraController.GetCamera());
 
+	// TODO: Shader::SetMat4, Shader::SetFloat4
 	std::dynamic_pointer_cast<Hazel::OpenGLShader>(m_FlatColorShader)->Bind();
 	std::dynamic_pointer_cast<Hazel::OpenGLShader>(m_FlatColorShader)->UploadUniformFloat4("u_Color", m_SquareColor);
 	
