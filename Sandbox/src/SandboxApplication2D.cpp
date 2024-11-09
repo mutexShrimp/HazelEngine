@@ -4,6 +4,44 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+class Timer
+{
+public:
+	Timer(const char* name)
+		:	m_Name(name), m_Stopped(false)
+	{
+		m_StartTimepoint = std::chrono::high_resolution_clock::now();
+	}
+
+	~Timer()
+	{
+		if (!m_Stopped)
+		{
+			Stop();
+		}
+	}
+	
+	void Stop()
+	{
+		auto endTimepoint = std::chrono::high_resolution_clock::now();
+
+		long long start = std::chrono::time_point_cast<std::chrono::microseconds>(m_StartTimepoint).time_since_epoch().count();
+		long long end = std::chrono::time_point_cast<std::chrono::microseconds>(endTimepoint).time_since_epoch().count();
+
+		m_Stopped = true;
+
+		float duration = (end - start) * 0.001f;
+		
+		std::cout << m_Name << " : " << duration << "ms" << std::endl;
+	}
+	
+private:
+	const char* m_Name;
+	std::chrono::time_point<std::chrono::steady_clock> m_StartTimepoint;
+	bool m_Stopped;
+	
+};
+
 SandboxApplication2D::SandboxApplication2D()
 	:	Layer("SandboxApplication2D"),
 		m_CameraController(1280.0f / 720.0f, true)
@@ -24,6 +62,11 @@ void SandboxApplication2D::OnDetach()
 
 void SandboxApplication2D::OnUpdate(Hazel::Timestep ts)
 {
+	Timer timer("SandboxApplication2D::OnUpdate", [](auto profileResult)
+	{
+		m_ProfileResults.push_back(profileResult);
+	});
+	
     // Update
     m_CameraController.OnUpdate(ts);
 
@@ -43,6 +86,15 @@ void SandboxApplication2D::OnImGuiRender()
 {
     ImGui::Begin("Settings");
     ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
+
+	for (auto& result : m_ProfileResults)
+	{
+		char label[50];
+		strcpy(label, result.Name);
+		strcat(label, " %.3fms");
+		ImGui::Text(label, result.Time);
+	}
+	
     ImGui::End();
 }
 
