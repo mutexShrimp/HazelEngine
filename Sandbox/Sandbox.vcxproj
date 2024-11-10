@@ -131,9 +131,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\ExampleLayer.h" />
     <ClInclude Include="src\SandboxApplication2D.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\ExampleLayer.cpp" />
     <ClCompile Include="src\SandboxApplication.cpp" />
     <ClCompile Include="src\SandboxApplication2D.cpp" />
   </ItemGroup>
