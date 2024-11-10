@@ -10,6 +10,10 @@ namespace Hazel
 {
     struct Renderer2DStorage
     {
+        const uint32_t MaxQuads = 10000;
+        const uint32_t MaxVertices = MaxQuads * 4;
+        const uint32_t MaxIndices = MaxQuads * 6;
+        
         Ref<VertexArray> QuadVertexArray;
         Ref<Shader> TextureShader;
         Ref<Texture2D> WhiteTexture;
@@ -23,15 +27,7 @@ namespace Hazel
         
         s_Data->QuadVertexArray = VertexArray::Create();
 
-        float squareVertices[5 * 4] = {
-            -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
-            0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-            0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
-            -0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
-        };
-
-        Ref<VertexBuffer> squareVB;
-        squareVB.reset(VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+        Ref<VertexBuffer> squareVB = VertexBuffer::Create();
 
         BufferLayout squareVBLayout = {
             { ShaderDataType::Float3, "a_Position" },
@@ -41,8 +37,7 @@ namespace Hazel
         s_Data->QuadVertexArray->AddVertexBuffer(squareVB);
 
         uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-        Ref<IndexBuffer> squareIB;
-        squareIB.reset(IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+        Ref<IndexBuffer> squareIB = IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
         s_Data->QuadVertexArray->SetIndexBuffer(squareIB);
 
         s_Data->WhiteTexture = Texture2D::Create(1, 1);
