@@ -14,6 +14,7 @@ SandboxApplication2D::SandboxApplication2D()
 void SandboxApplication2D::OnAttach()
 {
 	m_CheckerboardTexture = Hazel::Texture2D::Create("assets/textures/Checkerboard.png");
+	m_SpriteSheet = Hazel::Texture2D::Create("assets/game/textures/RPGpack_sheet_2X.png");
 	
 	m_Particle.ColorBegin = { 254 / 255.0f, 212 / 255.0f, 123 / 255.0f, 1.0f };
 	m_Particle.ColorEnd = { 254 / 255.0f, 109 / 255.0f, 41 / 255.0f, 1.0f };
@@ -45,6 +46,7 @@ void SandboxApplication2D::OnUpdate(Hazel::Timestep ts)
 		Hazel::RenderCommand::Clear();
 	}
 
+#if 0
 	{
 		static float rotation = 0.0f;
 		rotation += ts;
@@ -58,7 +60,8 @@ void SandboxApplication2D::OnUpdate(Hazel::Timestep ts)
 		Hazel::Renderer2D::DrawRotatedQuad({-2.0f, 0.0f, 0.0f}, {1.0f, 1.0f}, glm::radians(rotation), m_CheckerboardTexture, 20.0f); 
 		Hazel::Renderer2D::EndScene();
 	}
-
+#endif
+	
 	if (Hazel::Input::IsMouseButtonPressed(HZ_MOUSE_BUTTON_LEFT))
 	{
 		auto [x, y] = Hazel::Input::GetMousePosition();
@@ -74,6 +77,10 @@ void SandboxApplication2D::OnUpdate(Hazel::Timestep ts)
 			m_ParticleSystem.Emit(m_Particle);
 	}
 
+	Hazel::Renderer2D::BeginScene(m_CameraController.GetCamera());
+	Hazel::Renderer2D::DrawQuad({0.0f, 0.0f, 0.0f}, {1.0f, 1.0f}, m_SpriteSheet);
+	Hazel::Renderer2D::EndScene();
+	
 	m_ParticleSystem.OnUpdate(ts);
 	m_ParticleSystem.OnRender(m_CameraController.GetCamera());
 	
