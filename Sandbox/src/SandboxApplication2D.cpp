@@ -78,7 +78,7 @@ void SandboxApplication2D::OnUpdate(Hazel::Timestep ts)
 	}
 
 	Hazel::Renderer2D::BeginScene(m_CameraController.GetCamera());
-	Hazel::Renderer2D::DrawQuad({0.0f, 0.0f, 0.0f}, {1.0f, 1.0f}, m_SpriteSheet);
+	Hazel::Renderer2D::DrawQuad({0.0f, 0.0f, 0.0f}, {1.0f, 1.0f}, m_TextureStairs);
 	Hazel::Renderer2D::EndScene();
 	
 	m_ParticleSystem.OnUpdate(ts);

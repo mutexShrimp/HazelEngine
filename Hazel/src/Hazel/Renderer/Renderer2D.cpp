@@ -209,9 +209,9 @@ namespace Hazel
 
     void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
     {
-        const float x = 2, y = 3;
-        const float sheetWidth = 2560.0f, sheetHeight = 1664.0f;
-        const float spriteWidth = 128.0f, spriteHeight = 128.0f;
+        constexpr float x = 7, y = 6;
+        constexpr float sheetWidth = 2560.0f, sheetHeight = 1664.0f;
+        constexpr float spriteWidth = 128.0f, spriteHeight = 128.0f;
         
         constexpr size_t quadVertexCount = 4;
         constexpr glm::vec4 color = { 1.0f, 1.0f, 1.0f, 1.0f};
