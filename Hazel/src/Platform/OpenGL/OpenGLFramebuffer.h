@@ -11,10 +11,16 @@ namespace Hazel
         virtual ~OpenGLFramebuffer();
 
         void Invalidate();
+
+        void Bind() override;
+        void Unbind() override;
+
+        uint32_t GetColorAttachmentRendererID() const override { return m_ColorAttachment; }
+        const FramebufferSpecification& GetSpecification() const override { return m_Specification; }
         
     private:
         uint32_t m_RendererID;
-        uint32_t m_ColorAttachment;
+        uint32_t m_ColorAttachment, m_DepthAttachment;
         FramebufferSpecification m_Specification;
         
     };
