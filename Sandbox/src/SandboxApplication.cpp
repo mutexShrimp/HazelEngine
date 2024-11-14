@@ -3,7 +3,6 @@
 #include <Hazel/Core/EntryPoint.h>
 
 #include "SandboxApplication2D.h"
-#include "ExampleLayer.h"
 
 class SandboxApplication : public Hazel::Application
 {
