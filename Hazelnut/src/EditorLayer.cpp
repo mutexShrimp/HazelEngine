@@ -147,12 +147,21 @@ namespace Hazel
 			ImGui::Text("Indices : %d", stats.GetTotalIndexCount());
 	
 			ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
+			
+			ImGui::End();
 
+			ImGui::Begin("Viewport");
+			ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+			if (m_ViewportSize != *((glm::vec2*)&viewportPanelSize))
+			{
+				m_Framebuffer->Resize();
+				m_ViewportSize = {viewportPanelSize.x, viewportPanelSize.y};	
+			}
+			HZ_WARN("Viewport Size : {0}, {1}", viewportPanelSize.x, viewportPanelSize.y);
 			uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
 			ImGui::Image((void*)textureID, ImVec2{1280.0f, 720.0f}, ImVec2{ 0, 1}, ImVec2{ 1, 0});
-	
 			ImGui::End();
-	
+			
 			ImGui::End();
 		}
 		else
