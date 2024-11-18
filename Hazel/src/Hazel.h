@@ -8,6 +8,8 @@
 #include "Hazel/Core/Log.h"
 #include "Hazel/ImGui/ImGuiLayer.h"
 #include "Hazel/Core/Timestep.h"
+#include "Hazel/Scene/Scene.h"
+#include "Hazel/Scene/Components.h"
 
 // Input
 #include "Hazel/Core/Input.h"
