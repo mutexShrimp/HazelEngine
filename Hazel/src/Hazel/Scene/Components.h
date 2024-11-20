@@ -49,5 +49,34 @@ namespace Hazel
         CameraComponent(const CameraComponent&) = default;
 
     };
+
+    class ScriptableEntity;
     
+    struct NativeScriptComponent
+    {
+        ScriptableEntity* Instance = nullptr;
+
+        std::function<void()> InstantiateFunction;
+        std::function<void()> DestroyInstanceFunction;
+        std::function<void()> OnCreateFunction;
+
+        template<typename T>
+        void Bind()
+        {
+            InstantiateFunction = [&Instance]()
+            {
+                Instance = new T();
+            };
+
+            DestroyInstanceFunction = [&Instance]()
+            {
+                delete (T*)Instance;
+            };
+            
+            OnCreateFunction = [] (ScriptableEntity* instance)
+            {
+                ((T*)instance)->OnCreate();
+            };
+        }
+    };
 }

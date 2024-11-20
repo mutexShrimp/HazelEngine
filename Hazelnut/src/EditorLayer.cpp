@@ -35,6 +35,26 @@ namespace Hazel
 		m_SecondCamera = m_ActiveScene->CreateEntity("Clip-Space Entity");
 		auto& cc = m_SecondCamera.AddComponent<CameraComponent>();
 		cc.Primary = false;
+
+		class CameraController : public ScriptableEntity
+		{
+		public:
+			void OnCreate()
+			{
+				GetComponent<TransformComponent>();
+			}
+
+			void OnDestroy()
+			{
+				
+			}
+			
+			void OnUpdate(Timestep ts)
+			{
+				
+			}
+			
+		};
 	}
 
 	void EditorLayer::OnDetach()
