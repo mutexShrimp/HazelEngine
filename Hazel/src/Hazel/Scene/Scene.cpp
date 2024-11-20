@@ -2,6 +2,7 @@
 #include "Scene.h"
 
 #include "Components.h"
+#include "ScriptableEntity.h"
 #include "Entity.h"
 #include "Hazel/Renderer/Renderer2D.h"
 
@@ -63,6 +64,22 @@ namespace Hazel
 
     void Scene::OnUpdate(Timestep ts)
     {
+        //Scripts
+        {
+            m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
+            {
+                if (!nsc.Instance)
+                {
+                    nsc.InstantiateFunction();
+                    nsc.Instance->SetEntity(Entity{ entity, this });
+                    nsc.OnCreateFunction(nsc.Instance);
+                }
+
+                nsc.OnUpdateFunction(nsc.Instance, ts);
+            });
+            
+        }
+        
         // Render
         Camera* mainCamera = nullptr;
         glm::mat4* cameraTransform = nullptr;

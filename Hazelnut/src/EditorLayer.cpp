@@ -3,6 +3,7 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "Hazel/Core/KeyCodes.h"
 
 namespace Hazel
 {
@@ -41,7 +42,7 @@ namespace Hazel
 		public:
 			void OnCreate()
 			{
-				GetComponent<TransformComponent>();
+				
 			}
 
 			void OnDestroy()
@@ -51,10 +52,32 @@ namespace Hazel
 			
 			void OnUpdate(Timestep ts)
 			{
+				auto& transform = GetComponent<TransformComponent>().Transform;
+				float speed = 5.0f;
+				
+				if (Input::IsKeyPressed(Key::A))
+				{
+					transform[3][0] -= speed * ts;
+				}
+				if (Input::IsKeyPressed(Key::D))
+				{
+					transform[3][0] += speed * ts;
+				}
+				if (Input::IsKeyPressed(Key::W))
+				{
+					transform[3][1] += speed * ts;
+				}
+				if (Input::IsKeyPressed(Key::S))
+				{
+					transform[3][1] -= speed * ts;
+				}
 				
 			}
 			
 		};
+
+		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+		
 	}
 
 	void EditorLayer::OnDetach()
@@ -223,7 +246,7 @@ namespace Hazel
 			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 			m_CameraController.OnResize( viewportPanelSize.x, viewportPanelSize.y );
 		}
-		HZ_WARN("Viewport Size : {0}, {1}", viewportPanelSize.x, viewportPanelSize.y);
+		//HZ_WARN("Viewport Size : {0}, {1}", viewportPanelSize.x, viewportPanelSize.y);
 		uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
 		ImGui::Image((void*)textureID, ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1}, ImVec2{ 1, 0});
 		ImGui::End();
