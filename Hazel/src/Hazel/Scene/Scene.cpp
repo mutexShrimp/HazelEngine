@@ -22,7 +22,7 @@ namespace Hazel
     {
         Entity entity = { m_Registry.create(), this };
         entity.AddComponent<TransformComponent>();
-        auto tagComponent = entity.AddComponent<TagComponent>();
+        auto& tagComponent = entity.AddComponent<TagComponent>();
         tagComponent.Tag = name.empty() ? "Entity" : name;
         
         return entity;
