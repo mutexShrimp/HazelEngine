@@ -19,6 +19,11 @@ namespace Hazel
         {
             m_Entity = entity;
         }
+
+    protected:
+        virtual void OnCreate() {}
+        virtual void OnDestroy() {}
+        virtual void OnUpdate(Timestep ts) {}
         
     private:
         Entity m_Entity;
