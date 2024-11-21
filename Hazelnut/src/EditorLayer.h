@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "Hazel.h"
+#include "Panels/SceneHierarchyPanel.h"
 
 namespace Hazel
 {
@@ -37,5 +38,7 @@ namespace Hazel
         
         glm::vec4 m_SquareColor = { 0.2f, 0.3f, 0.8f, 1.0f };
 
+        SceneHierarchyPanel m_SceneHierarchyPanel;
+        
     };
 }
