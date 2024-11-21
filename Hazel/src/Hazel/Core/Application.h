@@ -12,7 +12,7 @@
 #include "Hazel/ImGui/ImGuiLayer.h"
 
 namespace Hazel {
-	class HAZEL_API Application
+	class Application
 	{
 	public:
 		Application(const std::string& name = "Game Engine");
