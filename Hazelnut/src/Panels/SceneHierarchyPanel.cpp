@@ -139,13 +139,13 @@ namespace Hazel
                     }
 
                     float orthoNear = camera.GetOrthographicNearClip();
-                    if (ImGui::DragFloat("Near", &orthoNear))
+                    if (ImGui::DragFloat("Near", &orthoSize))
                     {
                         camera.SetOrthographicNearClip(orthoNear);
                     }
 
                     float orthoFar = camera.GetOrthographicFarClip();
-                    if (ImGui::DragFloat("Far", &orthoFar))
+                    if (ImGui::DragFloat("Far", &orthoSize))
                     {
                         camera.SetOrthographicFarClip(orthoFar);
                     }
