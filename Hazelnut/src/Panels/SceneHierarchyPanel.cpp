@@ -95,6 +95,50 @@ namespace Hazel
             }
             
         }
+
+        if (entity.HasComponent<CameraComponent>())
+        {
+            if (ImGui::TreeNodeEx((void*)typeid(CameraComponent).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Camera"))
+            {
+                auto& cameraComponent = entity.GetComponent<CameraComponent>();
+
+                const char* projectionTypeStrings[] = { "Perspective", "Orthographic" };
+                const char* currentProjectionTypeString = projectionTypeStrings[(int)cameraComponent.Camera.GetProjectionType()];
+                if (ImGui::BeginCombo("Projection", currentProjectionTypeString))
+                {
+                    for (int i = 0; i < 2; i++)
+                    {
+                        bool isSelected = currentProjectionTypeString == projectionTypeStrings[i];
+                        if (ImGui::Selectable(projectionTypeStrings[i], isSelected))
+                        {
+                            currentProjectionTypeString = projectionTypeStrings[i];
+                            cameraComponent.Camera.SetProjectionType((SceneCamera::ProjectionType)i);
+                        }
+
+                        if (isSelected)
+                        {
+                            ImGui::SetItemDefaultFocus();
+                        }
+                    }
+                    
+                    ImGui::EndCombo();
+                }
+
+                if (cameraComponent.Camera.GetProjectionType() == SceneCamera::ProjectionType::Perspective)
+                {
+                    
+                }
+
+                if (cameraComponent.Camera.GetProjectionType() == SceneCamera::ProjectionType::Orthographic)
+                {
+                    
+                }
+                
+                ImGui::TreePop();
+                
+            }
+            
+        }
         
     }
 }
