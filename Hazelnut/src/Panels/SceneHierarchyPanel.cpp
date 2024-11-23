@@ -101,7 +101,8 @@ namespace Hazel
             if (ImGui::TreeNodeEx((void*)typeid(CameraComponent).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Camera"))
             {
                 auto& cameraComponent = entity.GetComponent<CameraComponent>();
-
+                auto& camera = cameraComponent.Camera; 
+                
                 const char* projectionTypeStrings[] = { "Perspective", "Orthographic" };
                 const char* currentProjectionTypeString = projectionTypeStrings[(int)cameraComponent.Camera.GetProjectionType()];
                 if (ImGui::BeginCombo("Projection", currentProjectionTypeString))
@@ -112,7 +113,7 @@ namespace Hazel
                         if (ImGui::Selectable(projectionTypeStrings[i], isSelected))
                         {
                             currentProjectionTypeString = projectionTypeStrings[i];
-                            cameraComponent.Camera.SetProjectionType((SceneCamera::ProjectionType)i);
+                            camera.SetProjectionType((SceneCamera::ProjectionType)i);
                         }
 
                         if (isSelected)
@@ -131,6 +132,23 @@ namespace Hazel
 
                 if (cameraComponent.Camera.GetProjectionType() == SceneCamera::ProjectionType::Orthographic)
                 {
+                    float orthoSize = camera.GetOrthographicSize();
+                    if (ImGui::DragFloat("Size", &orthoSize))
+                    {
+                        camera.SetOrthographicSize(orthoSize);
+                    }
+
+                    float orthoNear = camera.GetOrthographicNearClip();
+                    if (ImGui::DragFloat("Near", &orthoNear))
+                    {
+                        camera.SetOrthographicNearClip(orthoNear);
+                    }
+
+                    float orthoFar = camera.GetOrthographicFarClip();
+                    if (ImGui::DragFloat("Far", &orthoFar))
+                    {
+                        camera.SetOrthographicFarClip(orthoFar);
+                    }
                     
                 }
                 
