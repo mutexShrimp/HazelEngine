@@ -102,6 +102,8 @@ namespace Hazel
             {
                 auto& cameraComponent = entity.GetComponent<CameraComponent>();
                 auto& camera = cameraComponent.Camera; 
+
+                ImGui::Checkbox("Primary", &cameraComponent.Primary);
                 
                 const char* projectionTypeStrings[] = { "Perspective", "Orthographic" };
                 const char* currentProjectionTypeString = projectionTypeStrings[(int)cameraComponent.Camera.GetProjectionType()];
@@ -127,7 +129,23 @@ namespace Hazel
 
                 if (cameraComponent.Camera.GetProjectionType() == SceneCamera::ProjectionType::Perspective)
                 {
-                    
+                    float perspectiveFOV = glm::degrees(camera.GetPerspectiveVerticalFOV());
+                    if (ImGui::DragFloat("Vertical FOV", &perspectiveFOV))
+                    {
+                        camera.SetPerspectiveVerticalFOV(glm::radians(perspectiveFOV));
+                    }
+
+                    float perspectiveNear = camera.GetPerspectiveNearClip();
+                    if (ImGui::DragFloat("Near", &perspectiveNear))
+                    {
+                        camera.SetPerspectiveNearClip(perspectiveNear);
+                    }
+
+                    float perspectiveFar = camera.GetPerspectiveNearClip();
+                    if (ImGui::DragFloat("Far", &perspectiveFar))
+                    {
+                        camera.SetPerspectiveNearClip(perspectiveFar);
+                    }
                 }
 
                 if (cameraComponent.Camera.GetProjectionType() == SceneCamera::ProjectionType::Orthographic)
@@ -139,17 +157,18 @@ namespace Hazel
                     }
 
                     float orthoNear = camera.GetOrthographicNearClip();
-                    if (ImGui::DragFloat("Near", &orthoSize))
+                    if (ImGui::DragFloat("Near", &orthoNear))
                     {
                         camera.SetOrthographicNearClip(orthoNear);
                     }
 
                     float orthoFar = camera.GetOrthographicFarClip();
-                    if (ImGui::DragFloat("Far", &orthoSize))
+                    if (ImGui::DragFloat("Far", &orthoFar))
                     {
                         camera.SetOrthographicFarClip(orthoFar);
                     }
-                    
+
+                    ImGui::Checkbox("Fixed Aspect Ratio", &cameraComponent.FixedAspectRatio);
                 }
                 
                 ImGui::TreePop();
