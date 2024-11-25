@@ -68,6 +68,17 @@ namespace Hazel
         
     }
 
+    static void DrawVec3Control(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f)
+    {
+        ImGui::Columns(2);
+
+        ImGui::SetColumnWidth(0, columnWidth);
+        ImGui::Text(label.c_str());
+        ImGui::NextColumn();
+        
+        ImGui::Columns(1);
+    }
+    
     void SceneHierarchyPanel::DrawComponents(Entity entity)
     {
         if (entity.HasComponent<TagComponent>())
@@ -87,9 +98,9 @@ namespace Hazel
         {
             if (ImGui::TreeNodeEx((void*)typeid(TransformComponent).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Transform"))
             {
-                auto& transform = entity.GetComponent<TransformComponent>().Transform;
+                auto& tc = entity.GetComponent<TransformComponent>();
 
-                ImGui::DragFloat3("Position", glm::value_ptr(transform[3]), 0.1f);
+                ImGui::DragFloat3("Position", glm::value_ptr(tc.Translation), 0.1f);
                 ImGui::TreePop();
                 
             }
