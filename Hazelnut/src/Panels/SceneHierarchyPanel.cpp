@@ -32,6 +32,15 @@ namespace Hazel
         {
             m_SelectionContext = {};
         }
+
+        if (ImGui::BeginPopupContextWindow(0, 1 | ImGuiPopupFlags_NoOpenOverItems))
+        {
+            if (ImGui::MenuItem("Create Empty Entity"))
+            {
+                m_Context->CreateEntity("Empty Entity");
+            }
+            ImGui::EndPopup();
+        }
         
         ImGui::End();
 
@@ -56,6 +65,16 @@ namespace Hazel
             m_SelectionContext = entity;
         }
 
+        bool entityDeleted = false;
+        if (ImGui::BeginPopupContextItem())
+        {
+            if (ImGui::MenuItem("Delete Entity"))
+            {
+                entityDeleted = true;
+            }
+            ImGui::EndPopup();
+        }
+        
         if (opened)
         {
             ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
@@ -66,7 +85,11 @@ namespace Hazel
             }
             ImGui::TreePop();
         }
-        
+
+        if (entityDeleted)
+        {
+            m_Context->DestroyEntity(entity);
+        }
     }
 
     static void DrawVec3Control(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f)
