@@ -49,6 +49,7 @@ namespace Hazel
         if (m_SelectionContext)
         {
             DrawComponents(m_SelectionContext);
+            
             if (ImGui::Button("Add Component"))
             {
                 ImGui::OpenPopup("AddComponent");
