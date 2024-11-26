@@ -195,15 +195,17 @@ namespace Hazel
 	template<typename T, typename UIFunction>
 	static void DrawComponent(const std::string& name, Entity entity, UIFunction uiFunction)
     {
-    	const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap;
+    	const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen |
+    		ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth |
+    			ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
     	if (entity.HasComponent<T>())
     	{
     		auto& component = entity.GetComponent<T>();
     		
     		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
     		bool open = ImGui::TreeNodeEx((void*)typeid(T).hash_code(), treeNodeFlags, name.c_str());
-    		ImGui::SameLine(ImGui::GetWindowWidth() - 25.0f);
-    		if (ImGui::Button("+", ImVec2{20, 20}))
+    		ImGui::SameLine(ImGui::GetWindowWidth() - 28.0f);
+    		if (ImGui::Button("+", ImVec2{26, 26}))
     		{
     			ImGui::OpenPopup("ComponentSettings");
     		}
