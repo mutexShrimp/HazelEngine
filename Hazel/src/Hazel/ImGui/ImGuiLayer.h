@@ -12,7 +12,7 @@ namespace Hazel {
 	{
 	public:
 		ImGuiLayer();
-		~ImGuiLayer();
+		~ImGuiLayer() = default;
 
 		void OnAttach() override;
 		void OnDetach() override;
@@ -26,7 +26,6 @@ namespace Hazel {
 	private:
 		bool m_BlockEvents = true;
 		float m_Time = 0.0f;
-
 	};
 
 }
