@@ -49,28 +49,6 @@ namespace Hazel
         if (m_SelectionContext)
         {
             DrawComponents(m_SelectionContext);
-            
-            if (ImGui::Button("Add Component"))
-            {
-                ImGui::OpenPopup("AddComponent");
-            }
-
-            if (ImGui::BeginPopup("AddComponent"))
-            {
-                if (ImGui::MenuItem("Camera"))
-                {
-                    m_SelectionContext.AddComponent<CameraComponent>();
-                    ImGui::CloseCurrentPopup();
-                }
-
-                if (ImGui::MenuItem("Sprite Renderer"))
-                {
-                    m_SelectionContext.AddComponent<SpriteRendererComponent>();
-                    ImGui::CloseCurrentPopup();
-                }
-
-                ImGui::EndPopup();
-            }
         }
         
         ImGui::End();
@@ -198,18 +176,22 @@ namespace Hazel
     	const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen |
     		ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth |
     			ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+    	
     	if (entity.HasComponent<T>())
     	{
     		auto& component = entity.GetComponent<T>();
+    		ImVec2 contentRegionAvailable = ImGui::GetContentRegionAvail();
     		
     		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
+    		float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+    		ImGui::Separator();
     		bool open = ImGui::TreeNodeEx((void*)typeid(T).hash_code(), treeNodeFlags, name.c_str());
-    		ImGui::SameLine(ImGui::GetWindowWidth() - 28.0f);
-    		if (ImGui::Button("+", ImVec2{26, 26}))
+    		ImGui::PopStyleVar();
+    		ImGui::SameLine(contentRegionAvailable.x - lineHeight * 0.5f);
+    		if (ImGui::Button("+", ImVec2{ lineHeight, lineHeight }))
     		{
     			ImGui::OpenPopup("ComponentSettings");
     		}
-    		ImGui::PopStyleVar();
             
     		bool removeComponent = false;
     		if (ImGui::BeginPopup("ComponentSettings"))
@@ -243,12 +225,39 @@ namespace Hazel
             char buffer[256];
             memset(buffer, 0, sizeof(buffer));
             strcpy_s(buffer, sizeof(buffer), tag.c_str()); 
-            if (ImGui::InputText("Tag", buffer, sizeof(buffer)))
+            if (ImGui::InputText("##Tag", buffer, sizeof(buffer)))
             {
                 tag = std::string(buffer);
             }
         }
 
+    	ImGui::SameLine();
+    	ImGui::PushItemWidth(-1);
+
+    	if (ImGui::Button("Add Component"))
+    	{
+    		ImGui::OpenPopup("AddComponent");
+    	}
+
+    	if (ImGui::BeginPopup("AddComponent"))
+    	{
+    		if (ImGui::MenuItem("Camera"))
+    		{
+    			m_SelectionContext.AddComponent<CameraComponent>();
+    			ImGui::CloseCurrentPopup();
+    		}
+
+    		if (ImGui::MenuItem("Sprite Renderer"))
+    		{
+    			m_SelectionContext.AddComponent<SpriteRendererComponent>();
+    			ImGui::CloseCurrentPopup();
+    		}
+
+    		ImGui::EndPopup();
+    	}
+
+    	ImGui::PopItemWidth();
+    	
     	DrawComponent<TransformComponent>("Transform", entity, [](auto& component)
     	{
     		DrawVec3Control("Translation", component.Translation);
