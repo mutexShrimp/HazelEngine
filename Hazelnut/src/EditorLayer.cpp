@@ -1,9 +1,11 @@
 ﻿#include "EditorLayer.h"
 #include "imgui/imgui.h"
 
+#include "Hazel/Core/KeyCodes.h"
+#include "Hazel/Scene/SceneSerializer.h"
+
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "Hazel/Core/KeyCodes.h"
 
 namespace Hazel
 {
@@ -84,7 +86,9 @@ namespace Hazel
 		m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
-		
+
+		SceneSerializer serializer(m_ActiveScene);
+		serializer.Serialize("assets/scenes/Example.hazel");
 	}
 
 	void EditorLayer::OnDetach()
