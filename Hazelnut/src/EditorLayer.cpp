@@ -1,5 +1,6 @@
 ﻿#include "EditorLayer.h"
 #include "imgui/imgui.h"
+#include "ImGuizmo.h"
 
 #include "Hazel/Core/KeyCodes.h"
 #include "Hazel/Scene/SceneSerializer.h"
@@ -252,7 +253,21 @@ namespace Hazel
 		}
 		//HZ_WARN("Viewport Size : {0}, {1}", viewportPanelSize.x, viewportPanelSize.y);
 		uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
-		ImGui::Image((void*)textureID, ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1}, ImVec2{ 1, 0});
+		ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1}, ImVec2{ 1, 0});
+
+		// Gizmos
+		Entity selectedEntity = m_SceneHierarchyPanel.GetSelecetdEntity();
+		if (selectedEntity)
+		{
+			ImGuizmo::SetOrthographic(false);
+			ImGuizmo::SetDrawlist();
+			
+			float windowWidth = ImGui::GetWindowWidth();
+			float windowHeight = ImGui::GetWindowHeight();
+			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
+			
+		}
+		
 		ImGui::End();
 		ImGui::PopStyleVar();
 		

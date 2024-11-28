@@ -4,12 +4,15 @@
 #include <imgui/imgui.h>
 #include <glm/gtc/type_ptr.hpp>
 
+#ifdef _MSVC_LANG
+	#define _CRT_SECURE_NO_WARNINGS
+#endif
+
 namespace Hazel
 {
     SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene>& context)
     {
         SetContext(context);
-        
     }
 
     void SceneHierarchyPanel:: SetContext(const Ref<Scene>& context)
