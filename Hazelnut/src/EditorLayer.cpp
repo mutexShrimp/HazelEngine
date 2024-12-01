@@ -31,7 +31,7 @@ namespace Hazel
 
 		m_ActiveScene = CreateRef<Scene>();
 
-		m_EditorCamera = EditorCamera(30.0f, 1.0f, 0.1f, 1000.0f);
+		m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
 
 #if 0
 		auto square = m_ActiveScene->CreateEntity("Green Square");
@@ -120,8 +120,8 @@ namespace Hazel
 		if (m_ViewportFocused)
 		{
 			m_CameraController.OnUpdate(ts);
-			m_EditorCamera.OnUpdate(ts);
 		}
+		m_EditorCamera.OnUpdate(ts);
 		
 		// Render
 		Renderer2D::ResetStats();
@@ -249,14 +249,8 @@ namespace Hazel
 		Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused && !m_ViewportHovered);
 		
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-		if (m_ViewportSize != *((glm::vec2*)&viewportPanelSize) && viewportPanelSize.x > 0 && viewportPanelSize.y > 0)
-		{
-			m_Framebuffer->Resize( (uint32_t)viewportPanelSize.x, (uint32_t)viewportPanelSize.y );
-			m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
-			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
-			m_CameraController.OnResize( viewportPanelSize.x, viewportPanelSize.y );
-		}
-		//HZ_WARN("Viewport Size : {0}, {1}", viewportPanelSize.x, viewportPanelSize.y);
+		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
+		
 		uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
 		ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1}, ImVec2{ 1, 0});
 		
