@@ -7,8 +7,8 @@
 
 #include <glm/glm.hpp>
 
-namespace Hazel
-{
+namespace Hazel {
+
 	class EditorCamera : public Camera
 	{
 	public:
@@ -62,6 +62,6 @@ namespace Hazel
 		float m_Pitch = 0.0f, m_Yaw = 0.0f;
 
 		float m_ViewportWidth = 1280, m_ViewportHeight = 720;
-	};	
-}
+	};
 
+}
