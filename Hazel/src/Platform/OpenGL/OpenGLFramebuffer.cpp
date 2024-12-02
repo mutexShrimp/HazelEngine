@@ -6,10 +6,50 @@
 namespace Hazel
 {
     static const uint32_t s_MaxFramebufferSize = 8192;
-    
+
+    namespace Utils
+    {
+    	static GLenum TextureTarget(bool multisampled)
+    	{
+    		return multisampled ? GL_TEXTURE_2D_MULTISAMPLE : GL_TEXTURE_2D;
+    	}
+    	
+    	static void CreateTextures(bool multisampled, uint32_t* outID, uint32_t count)
+    	{
+    		glCreateTextures(TextureTarget(multisampled), count, outID);
+    	}
+
+    	static void BindTexture(bool multisampled, uint32_t id)
+    	{
+    		glBindTexture(TextureTarget(multisampled), id);
+    	}
+    	
+	    static bool IsDepthFormat(FramebufferTextureFormat format)
+	    {
+	    	switch (format)
+	    	{
+	    	case FramebufferTextureFormat::DEPTH24STENCIL8: return true;
+	    	}
+		
+	    	return false;
+	    }
+    }
+	
     OpenGLFramebuffer::OpenGLFramebuffer(const FramebufferSpecification& spec)
         : m_Specification(spec)
     {
+    	for (auto format : m_Specification.Attachments.Attachments)
+    	{
+	        if (!Utils::IsDepthFormat(format.TextureFormat))
+	        {
+		        m_ColorAttachmentSpecifications.emplace_back(format);
+	        }
+	        else
+	        {
+		        m_DepthAttachmentSpecification = format;
+	        }
+    	}
+    	
         Invalidate();
     }
 
@@ -32,11 +72,23 @@ namespace Hazel
         glCreateFramebuffers(1, &m_RendererID);
         glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
 
+    	bool multisample = m_Specification.Samples > 1;
+    	// Attachments
+        if (m_ColorAttachmentSpecifications.size())
+        {
+        	m_ColorAttachments.resize(m_ColorAttachmentSpecifications.size());
+        	Utils::CreateTextures(multisample, m_ColorAttachments.data(), m_ColorAttachments.size());
+        	
+        	for (auto& spec : m_ColorAttachmentSpecifications)
+        	{
+        		
+        	}
+        }
+    	
         glCreateTextures(GL_TEXTURE_2D, 1, &m_ColorAttachment);
         glBindTexture(GL_TEXTURE_2D, m_ColorAttachment);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Specification.Width, m_Specification.Height,
             0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
