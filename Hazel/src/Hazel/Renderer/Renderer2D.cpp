@@ -141,8 +141,6 @@ namespace Hazel
 
     void Renderer2D::EndScene()
     {
-        uint32_t dataSize = (uint8_t*)s_Data.QuadVertexBufferPtr - (uint8_t*)s_Data.QuadVertexBufferBase; 
-        s_Data.QuadVertexBuffer->SetData(s_Data.QuadVertexBufferBase, dataSize);
         Flush();
     }
 
@@ -162,16 +160,6 @@ namespace Hazel
         RenderCommand::DrawIndexed(s_Data.QuadVertexArray, s_Data.QuadIndexCount);
 
         s_Data.Stats.DrawCalls++;
-    }
-
-    void Renderer2D::FlushAndReset()
-    {
-        EndScene();
-        
-        s_Data.QuadIndexCount = 0;
-        s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
-
-        s_Data.TextureSlotIndex = 1;
     }
 
     void Renderer2D::StartBatch()
@@ -227,7 +215,7 @@ namespace Hazel
         
         if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
         {
-            FlushAndReset();
+            NextBatch();
         }
 
         float textureIndex = 0.0f;
@@ -298,7 +286,7 @@ namespace Hazel
     {
         if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
         {
-            FlushAndReset();
+            NextBatch();
         }
 
         constexpr size_t quadVertexCount = 4;
@@ -318,7 +306,7 @@ namespace Hazel
         {
             if (s_Data.TextureSlotIndex >= Renderer2DData::MaxTextureSlots)
             {
-                FlushAndReset();
+                NextBatch();
             }
             
             textureIndex = (float)s_Data.TextureSlotIndex;
@@ -384,7 +372,7 @@ namespace Hazel
     {
         if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
         {
-            FlushAndReset();
+            NextBatch();
         }
     	
         constexpr size_t quadVertexCount = 4;
