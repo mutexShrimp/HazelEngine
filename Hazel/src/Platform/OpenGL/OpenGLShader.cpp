@@ -1,6 +1,8 @@
 ﻿#include "hzpch.h"
 #include "OpenGLShader.h"
 
+#include "Hazel/Core/Timer.h"
+
 #include <fstream>
 #include <glad/glad.h>
 
@@ -8,25 +10,52 @@
 
 namespace Hazel
 {
-	static GLenum ShaderTypeFromString(const std::string& type)
+	namespace Utils
 	{
-		if (type == "vertex")
+		static GLenum ShaderTypeFromString(const std::string& type)
 		{
-			return GL_VERTEX_SHADER;
+			if (type == "vertex")
+			{
+				return GL_VERTEX_SHADER;
+			}
+			if (type == "fragment" || type == "pixel")
+			{
+				return GL_FRAGMENT_SHADER;
+			}
+			HZ_CORE_ASSERT(false, "Unknown shader type!");
+			return 0;
 		}
-		if (type == "fragment" || type == "pixel")
+
+		static const char* GetCacheDirectory()
 		{
-			return GL_FRAGMENT_SHADER;
+			// TODO: make sure the assets directory is valid
+			return "assets/cache/shader/opengl";
 		}
-		HZ_CORE_ASSERT(false, "Unknown shader type!");
-		return 0;
+		
+		static void CreateCacheDirectoryIfNeeded()
+		{
+			std::string cacheDirectory = GetCacheDirectory();
+			if(!std::filesystem::exists(cacheDirectory))
+			{
+				std::filesystem::create_directories(cacheDirectory);
+			}
+		}
 	}
 	
 	OpenGLShader::OpenGLShader(const std::string& filepath)
 	{
+		Utils::CreateCacheDirectoryIfNeeded();
+		
 		std::string source = ReadFile(filepath);
 		auto shaderSources = PreProcess(source);
-		Compile(shaderSources);
+
+		{
+			Timer timer;
+			CompileOrGetVulkanBinaries(shaderSources);
+			CompileOrGetOpenGLBinaries();
+			CreateProgram();
+			HZ_CORE_WARN("Shader creation took {0} ms", timer.ElapsedMillis());
+		}
 
 		// Extract name from filepath
 		auto lastSlash = filepath.find_last_of("/\\");
@@ -178,11 +207,11 @@ namespace Hazel
 			HZ_CORE_ASSERT(eol != std::string::npos, "Syntax error");
 			size_t begin = pos + typeTokenLength + 1;
 			std::string type = source.substr(begin, eol - begin);
-			HZ_CORE_ASSERT(ShaderTypeFromString(type), "Invalid shader type specified");
+			HZ_CORE_ASSERT(Utils::ShaderTypeFromString(type), "Invalid shader type specified");
 
 			size_t nextLinePos = source.find_first_not_of("\r\n", eol);
 			pos = source.find(typeToken, nextLinePos);
-			shaderSources[ShaderTypeFromString(type)] =
+			shaderSources[Utils::ShaderTypeFromString(type)] =
 				source.substr(nextLinePos,
 					pos - (nextLinePos == std::string::npos ? source.size() - 1 : nextLinePos));
 		}
@@ -264,5 +293,21 @@ namespace Hazel
 		}
 
 		m_RendererID = program;
+    }
+
+    void OpenGLShader::CompileOrGetVulkanBinaries(const std::unordered_map<GLenum, std::string>& shaderSources)
+    {
+    }
+
+    void OpenGLShader::CompileOrGetOpenGLBinaries()
+    {
+    }
+
+    void OpenGLShader::CreateProgram()
+    {
+    }
+
+    void OpenGLShader::Reflect(GLenum stage, const std::vector<uint32_t>& shaderData)
+    {
     }
 }
