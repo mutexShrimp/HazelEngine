@@ -297,6 +297,8 @@ namespace Hazel
 
     void OpenGLShader::CompileOrGetVulkanBinaries(const std::unordered_map<GLenum, std::string>& shaderSources)
     {
+		GLuint program = glCreateProgram();
+		
     }
 
     void OpenGLShader::CompileOrGetOpenGLBinaries()
