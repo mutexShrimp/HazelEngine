@@ -7,6 +7,7 @@
 #include "Hazel/Renderer/RenderCommand.h"
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace Hazel
 {
@@ -51,6 +52,7 @@ namespace Hazel
         };
     	CameraData CameraBuffer;
     	Ref<UniformBuffer> CameraUniformBuffer;
+    	
     };
 
     static Renderer2DData s_Data;
@@ -118,7 +120,7 @@ namespace Hazel
 
     void Renderer2D::Shutdown()
     {
-        
+    	delete[] s_Data.QuadVertexBufferBase;
     }
 
     void Renderer2D::BeginScene(const Camera& camera, const glm::mat4& transform)
@@ -162,9 +164,9 @@ namespace Hazel
         {
             s_Data.TextureSlots[i]->Bind(i);
         }
-    	
-        RenderCommand::DrawIndexed(s_Data.QuadVertexArray, s_Data.QuadIndexCount);
 
+    	s_Data.TextureShader->Bind();
+        RenderCommand::DrawIndexed(s_Data.QuadVertexArray, s_Data.QuadIndexCount);
         s_Data.Stats.DrawCalls++;
     }
 

@@ -12,10 +12,22 @@
 #include "Hazel/ImGui/ImGuiLayer.h"
 
 namespace Hazel {
+	struct ApplicationCommandLineArgs
+	{
+		int Count = 0;
+		char** Args = nullptr;
+
+		const char* operator[](int index) const
+		{
+			HZ_CORE_ASSERT(index < Count);
+			return Args[index];
+		}
+	};
+	
 	class Application
 	{
 	public:
-		Application(const std::string& name = "Game Engine");
+		Application(const std::string& name = "Hazel App", ApplicationCommandLineArgs args = ApplicationCommandLineArgs());
 		virtual ~Application();
 
 		void Run();
@@ -28,13 +40,16 @@ namespace Hazel {
 		void Close();
 
 		ImGuiLayer* GetImGuiLayer() { return m_ImGuiLayer; }
-		inline Window& GetWindow() { return *m_Window; }
-		inline static Application& Get() { return *s_Instance; }
+		Window& GetWindow() { return *m_Window; }
+		static Application& Get() { return *s_Instance; }
 
+		ApplicationCommandLineArgs GetCommandLineArgs() const { return m_CommandLineArgs; }
+		
 	private:
 		bool OnWindowClosed(WindowCloseEvent& e);
 		bool OnWindowResize(WindowResizeEvent& e);
-		
+
+		ApplicationCommandLineArgs m_CommandLineArgs;
 		Scope<Window> m_Window;
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
@@ -48,6 +63,6 @@ namespace Hazel {
 	};
 
 	// To be defined in Client
-	Application* CreateApplication();
+	Application* CreateApplication(ApplicationCommandLineArgs args);
 
 }
